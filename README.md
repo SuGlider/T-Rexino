@@ -1,3 +1,6 @@
+![image](https://github.com/user-attachments/assets/d22127d5-dfb0-45ab-b947-055fd5d9ddaa)
+
+
 ### The Application
    This application is a DEMO for Maker Faire May, 2025 / Prague\
    It will use a ESP32 | ESP32-S3 | ESP32-C3 | ESP32-C6 | ESP32-H2 and 
@@ -6,6 +9,10 @@
    The proximity will trigger a BLE Mouse event to a connected Android Tablet
    that is running a Dino T-Rex Android game found at
    https://play.google.com/store/apps/details?id=com.deerslab.dinoTREX&hl=en-US
+
+![image](https://github.com/user-attachments/assets/a160e2be-35ca-43be-9de1-e0ddf9805bb4)
+
+
 
    In order to make it work, after uploading the ESP32 with the current sketch,
    The Dino T-Rex game shall be installed into the Android Tablet.\
