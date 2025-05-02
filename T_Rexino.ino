@@ -56,7 +56,7 @@
 //#define SCL 26
 
 // the ESP32 SoC pin that the APDS-9960 interrupt is attached to
-#define INT_PIN INT
+#define INT_PIN 21
 
 // set your board LED INdicator pin here
 // this example uses the built-in LED for easy visualization
@@ -150,8 +150,7 @@ void setup() {
 #endif
 }
 
-bool buttonPress = false;
-bool buttonReleased = false;
+bool buttonWasReleased = false;
 const uint32_t debounceTime = 50; // milliseconds
 uint32_t lastMousePressed = 0;
 void loop() {
@@ -162,30 +161,29 @@ void loop() {
     Serial.println(proximity);
     //clear the interrupt
     apds.clearInterrupt();
-    // presse Mouse Click
-    if (!buttonPress) {
-      // Presse Mouse Click
+    // Mouse Click press
+    if (buttonWasReleased) {
+      // Mouse Click BLE event
       bleMouse.press(MOUSE_LEFT);
       lastMousePressed = millis();
       Serial.println("Mouse Click Pressed...");
       // Blink LED while Mouse is pressed
       digitalWrite(LED_PIN, HIGH);
-      buttonPress = true;
-      buttonReleased = false;
+      //buttonPress = true;
+      buttonWasReleased = false;
     }
   } else {
-    // Nothing in front of the sensor
-    // get ready for a new mouse click
-    if (buttonPress && buttonReleased) {
-      buttonPress = false;
+    // Nothing in front of the sensor - turn off LED
+    if (buttonWasReleased) {
       digitalWrite(LED_PIN, LOW);
     }
   }
-
-  if (!buttonReleased && buttonPress && millis() > lastMousePressed + debounceTime) {
+  // Timed Mouse BLE event release
+  // Keeping the senor activated will cause Mouse Click repeating in <debounceTime> ms
+  if (!buttonWasReleased && millis() > lastMousePressed + debounceTime) {
     bleMouse.release(MOUSE_LEFT);
     Serial.println("Mouse Click Released...");
-    buttonReleased = true;
+    buttonWasReleased = true;
   }
   delay(10);
 }
